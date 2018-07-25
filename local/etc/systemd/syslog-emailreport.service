@@ -1,0 +1,11 @@
+[Unit]
+Description=Save Ramdisk to Wine drive C
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=
+ExecStop=/home/john/.scfullcopy_atend
+
+[Install]
+WantedBy=multi-user.target network.target
