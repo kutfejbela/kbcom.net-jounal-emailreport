@@ -22,7 +22,6 @@ syslog_send_email()
    LOCAL_STRING_EMAILBODY="$LOCAL_DATETIME: $LOCAL_STRING_RAWMSG"
 
    LOCAL_EMAIL_SENDCOMMAND=$(command_replace_emailbody "$LOCAL_STRING_EMAILBODY")
-echo $LOCAL_EMAIL_SENDCOMMAND
    $(/bin/bash -c "$LOCAL_EMAIL_SENDCOMMAND")
   fi
  done
@@ -34,14 +33,18 @@ syslog_write_log()
  local LOCAL_DATETIME
  local LOCAL_FILE_LOG
 
+ LOCAL_DATETIME=$(/bin/date +%Y%m%d%H%M%S%N)
+
+ echo "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME" 1>"$CONFIG_FILE_LOGSUFFIX.logfile"
+
  while read LOCAL_STRING_RAWMSG
  do
   if [ "$LOCAL_STRING_RAWMSG" != "" ]
   then
    LOCAL_DATETIME=$(/bin/date)
-   LOCAL_FILE_LOG=$(/bin/head -n 1 "$CONFIG_FILE_LOGFILE")
+   LOCAL_FILE_LOG=$(/usr/bin/head -n 1 "$CONFIG_FILE_LOGSUFFIX.logfile")
 
-   echo "$LOCAL_DATE: $LOCAL_STRING_RAWMSG" 1>"$CONFIG_FILE_LOGFILE"
+   echo "$LOCAL_DATETIME: $LOCAL_STRING_RAWMSG" 1>>"$LOCAL_FILE_LOG"
   fi
  done
 }
@@ -54,21 +57,27 @@ log_rotatemerge_sendemail()
  local LOCAL_EMAIL_SENDCOMMAND
 
  LOCAL_DATETIME=$(/bin/date +%Y%m%d%H%M%S%N)
- LOCAL_FILE_LOG=$(/bin/head -n 1 "$CONFIG_FILE_LOGFILE")
+ LOCAL_FILE_LOG=$(/usr/bin/head -n 1 "$CONFIG_FILE_LOGSUFFIX.logfile")
 
- echo "$SHELL_FILE_LOGFILE.$LOCAL_DATETIME" 1>"$SHELL_FILE_LOGFILE"
+ echo "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME" 1>"$CONFIG_FILE_LOGSUFFIX.logfile"
 
- sleep 10
- /bin/cat "$LOCAL_FILE_LOG" 1>> "$SHELL_FILE_LOGFILE.log"
- /bin/rm "$LOCAL_FILE_LOG"
-
- LOCAL_STRING_EMAILBODY=$(/bin/cat "$SHELL_FILE_LOGFILE.log")
-
- LOCAL_EMAIL_SENDCOMMAND=$(command_replace_emailbody "$LOCAL_STRING_EMAILBODY")
- $($LOCAL_EMAIL_SENDCOMMAND)
-
- if [ $? -eq 0 ]
+ if [ -s "$LOCAL_FILE_LOG" ]
  then
-  /bin/rm "$SHELL_FILE_LOGFILE.log"
+  sleep 10
+  /bin/cat "$LOCAL_FILE_LOG" 1>> "$CONFIG_FILE_LOGSUFFIX.log"
+  /bin/rm "$LOCAL_FILE_LOG"
+ fi
+
+ if [ -s "$CONFIG_FILE_LOGSUFFIX.log" ]
+ then
+  LOCAL_STRING_EMAILBODY=$(/bin/cat "$CONFIG_FILE_LOGSUFFIX.log")
+
+  LOCAL_EMAIL_SENDCOMMAND=$(command_replace_emailbody "$LOCAL_STRING_EMAILBODY")
+  $(/bin/bash -c "$LOCAL_EMAIL_SENDCOMMAND")
+
+  if [ $? -eq 0 ]
+  then
+   /bin/rm "$CONFIG_FILE_LOGSUFFIX.log"
+  fi
  fi
 }
