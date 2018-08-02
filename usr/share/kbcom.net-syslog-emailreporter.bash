@@ -12,6 +12,9 @@ syslogsendemail)
 syslogwritetolog)
  syslog_write_log
  ;;
+syslogwritetologandsendmail)
+ syslog_writelogsendemail
+ ;;
 flush)
  log_rotatemerge_sendemail
  ;;

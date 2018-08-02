@@ -43,6 +43,32 @@ syslog_write_log()
   then
    LOCAL_DATETIME=$(/bin/date)
    LOCAL_FILE_LOG=$(/usr/bin/head -n 1 "$CONFIG_FILE_LOGSUFFIX.logfile")
+   LOCAL_STRING_EMAILBODY="$LOCAL_DATETIME: $LOCAL_STRING_RAWMSG"
+
+   echo "$LOCAL_DATETIME: $LOCAL_STRING_RAWMSG" 1>>"$LOCAL_FILE_LOG"
+
+   LOCAL_EMAIL_SENDCOMMAND=$(command_replace_emailbody "$LOCAL_STRING_EMAILBODY")
+   $(/bin/bash -c "$LOCAL_EMAIL_SENDCOMMAND")
+  fi
+ done
+}
+
+syslog_writelogsendmail()
+{
+ local LOCAL_STRING_RAWMSG
+ local LOCAL_DATETIME
+ local LOCAL_FILE_LOG
+
+ LOCAL_DATETIME=$(/bin/date +%Y%m%d%H%M%S%N)
+
+ echo "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME" 1>"$CONFIG_FILE_LOGSUFFIX.logfile"
+
+ while read LOCAL_STRING_RAWMSG
+ do
+  if [ "$LOCAL_STRING_RAWMSG" != "" ]
+  then
+   LOCAL_DATETIME=$(/bin/date)
+   LOCAL_FILE_LOG=$(/usr/bin/head -n 1 "$CONFIG_FILE_LOGSUFFIX.logfile")
 
    echo "$LOCAL_DATETIME: $LOCAL_STRING_RAWMSG" 1>>"$LOCAL_FILE_LOG"
   fi
