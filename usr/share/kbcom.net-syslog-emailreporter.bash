@@ -1,11 +1,9 @@
 #!/bin/bash
 
 GLOBAL_FOLDER_SCRIPT=$(/usr/bin/dirname "$0")
-source "$GLOBAL_FOLDER_SCRIPT/.kbcom.net-syslog-emailreport.bash"
+source "$GLOBAL_FOLDER_SCRIPT/.kbcom.net-syslog-emailreporter.bash"
 
-CONFIG_EMAIL_SENDCOMMAND="proba@EB@PROBA"
-command_replace_emailbody "E-mail \" üzenet"
-
+SHELL_ACTION="$1"
 
 case $SHELL_ACTION in
 syslogsendemail)
