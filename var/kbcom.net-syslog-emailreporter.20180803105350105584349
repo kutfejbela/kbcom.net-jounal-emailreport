@@ -1,2 +1,0 @@
-Fri Aug  3 11:06:55 CEST 2018: authpriv.notice <85>Aug  3 11:06:55 sudo: rendszergazda : TTY=pts/0 ; PWD=/home/rendszergazda ; USER=root ; COMMAND=/usr/bin/mc
-Fri Aug  3 11:07:51 CEST 2018: daemon.warning <28>Aug  3 11:07:51 systemd-tmpfiles[3786]: [/usr/lib/tmpfiles.d/var.conf:14] Duplicate line for path "/var/log", ignoring.

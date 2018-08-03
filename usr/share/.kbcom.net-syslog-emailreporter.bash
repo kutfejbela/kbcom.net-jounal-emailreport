@@ -4,7 +4,7 @@ command_replace_emailbody()
 {
  local LOCAL_EMAIL_BODY="$1"
 
- echo "${CONFIG_EMAIL_SENDCOMMAND%%@EB@*}${LOCAL_EMAIL_BODY/\"/\\\"}${CONFIG_EMAIL_SENDCOMMAND#*@EB@}"
+ echo "${CONFIG_EMAIL_SENDCOMMAND%%@EB@*}${LOCAL_EMAIL_BODY//\"/\\\"}${CONFIG_EMAIL_SENDCOMMAND#*@EB@}"
 }
 
 file_checkandcreate_log()
@@ -103,7 +103,7 @@ log_rotatemerge_sendemail()
 {
  local LOCAL_DATETIME
  local LOCAL_FILE_LOG
- local LOCAL_STRING_EMAILBODY
+ local LOCAL_STRING_MESSAGE
  local LOCAL_EMAIL_SENDCOMMAND
 
  LOCAL_DATETIME=$(/bin/date +%Y%m%d%H%M%S%N)
@@ -120,9 +120,10 @@ log_rotatemerge_sendemail()
 
  if [ -s "$CONFIG_FILE_LOGSUFFIX.log" ]
  then
-  LOCAL_STRING_EMAILBODY=$(/bin/cat "$CONFIG_FILE_LOGSUFFIX.log")
+  LOCAL_STRING_MESSAGE=$(/bin/cat "$CONFIG_FILE_LOGSUFFIX.log")
 
-  LOCAL_EMAIL_SENDCOMMAND=$(command_replace_emailbody "$LOCAL_STRING_EMAILBODY")
+  LOCAL_EMAIL_SENDCOMMAND=$(command_replace_emailbody "$LOCAL_STRING_MESSAGE")
+echo "$LOCAL_EMAIL_SENDCOMMAND"
   $(/bin/bash -c "$LOCAL_EMAIL_SENDCOMMAND")
 
   if [ $? -eq 0 ]
