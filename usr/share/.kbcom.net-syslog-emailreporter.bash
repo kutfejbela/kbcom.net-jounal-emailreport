@@ -123,7 +123,6 @@ log_rotatemerge_sendemail()
   LOCAL_STRING_MESSAGE=$(/bin/cat "$CONFIG_FILE_LOGSUFFIX.log")
 
   LOCAL_EMAIL_SENDCOMMAND=$(command_replace_emailbody "$LOCAL_STRING_MESSAGE")
-echo "$LOCAL_EMAIL_SENDCOMMAND"
   $(/bin/bash -c "$LOCAL_EMAIL_SENDCOMMAND")
 
   if [ $? -eq 0 ]
