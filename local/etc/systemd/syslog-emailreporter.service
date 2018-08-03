@@ -1,11 +1,14 @@
 [Unit]
-Description=Save Ramdisk to Wine drive C
+Description=syslog-emailreporter logrotate and send mail
+Requires=network-online.target
+After=network-online.target
 
 [Service]
 Type=oneshot
 RemainAfterExit=true
-ExecStart=
-ExecStop=/home/john/.scfullcopy_atend
+ExecStartPre=/bin/sleep 30
+ExecStart=/opt/kbcom.net-syslog-emailreporter/run.bash flush
+ExecStop=/opt/kbcom.net-syslog-emailreporter/run.bash flush
 
 [Install]
-WantedBy=multi-user.target network.target
+WantedBy=multi-user.target

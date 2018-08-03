@@ -1,0 +1,9 @@
+[Unit]
+Description=Run 'syslog-emailreporter.service' four hourly and on boot
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=4h
+
+[Install]
+WantedBy=timers.target
