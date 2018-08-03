@@ -12,7 +12,7 @@ syslogsendemail)
 syslogwritetolog)
  syslog_write_log
  ;;
-syslogwritetologandsendmail)
+syslogwritetologandsendemail)
  syslog_writelogsendemail
  ;;
 flush)

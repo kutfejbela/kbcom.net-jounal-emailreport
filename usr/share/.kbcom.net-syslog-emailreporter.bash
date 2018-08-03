@@ -73,7 +73,7 @@ syslog_write_log()
  done
 }
 
-syslog_writelogsendmail()
+syslog_writelogsendemail()
 {
  local LOCAL_STRING_RAWMSG
  local LOCAL_DATETIME
