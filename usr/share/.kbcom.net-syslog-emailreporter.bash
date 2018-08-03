@@ -9,6 +9,9 @@ command_replace_emailbody()
 
 file_checkandcreate_log()
 {
+ local LOCAL_DATETIME
+ local LOCAL_FILE_LOG
+
  if [ ! -f "$CONFIG_FILE_LOGSUFFIX.logfile" ]
  then
   LOCAL_DATETIME=$(/bin/date +%Y%m%d%H%M%S%N)
@@ -32,7 +35,7 @@ syslog_send_email()
 {
  local LOCAL_STRING_RAWMSG
  local LOCAL_DATETIME
- local LOCAL_STRING_EMAILBODY
+ local LOCAL_STRING_MESSAGE
  local LOCAL_EMAIL_SENDCOMMAND
 
  while read LOCAL_STRING_RAWMSG
@@ -40,9 +43,9 @@ syslog_send_email()
   if [ "$LOCAL_STRING_RAWMSG" != "" ]
   then
    LOCAL_DATETIME=$(/bin/date)
-   LOCAL_STRING_EMAILBODY="$LOCAL_DATETIME: $LOCAL_STRING_RAWMSG"
+   LOCAL_STRING_MESSAGE="$LOCAL_DATETIME: $LOCAL_STRING_RAWMSG"
 
-   LOCAL_EMAIL_SENDCOMMAND=$(command_replace_emailbody "$LOCAL_STRING_EMAILBODY")
+   LOCAL_EMAIL_SENDCOMMAND=$(command_replace_emailbody "$LOCAL_STRING_MESSAGE")
    $(/bin/bash -c "$LOCAL_EMAIL_SENDCOMMAND")
   fi
  done
@@ -53,6 +56,7 @@ syslog_write_log()
  local LOCAL_STRING_RAWMSG
  local LOCAL_DATETIME
  local LOCAL_FILE_LOG
+ local LOCAL_STRING_MESSAGE
 
  file_checkandcreate_log
 
@@ -62,21 +66,20 @@ syslog_write_log()
   then
    LOCAL_DATETIME=$(/bin/date)
    LOCAL_FILE_LOG=$(/usr/bin/head -n 1 "$CONFIG_FILE_LOGSUFFIX.logfile")
-   LOCAL_STRING_EMAILBODY="$LOCAL_DATETIME: $LOCAL_STRING_RAWMSG"
+   LOCAL_STRING_MESSAGE="$LOCAL_DATETIME: $LOCAL_STRING_RAWMSG"
 
-   echo "$LOCAL_DATETIME: $LOCAL_STRING_RAWMSG" 1>>"$LOCAL_FILE_LOG"
-
-   LOCAL_EMAIL_SENDCOMMAND=$(command_replace_emailbody "$LOCAL_STRING_EMAILBODY")
-   $(/bin/bash -c "$LOCAL_EMAIL_SENDCOMMAND")
+   echo "$LOCAL_STRING_MESSAGE" 1>>"$LOCAL_FILE_LOG"
   fi
  done
 }
 
-syslog_writelogsendemail()
+syslog_writelogsendmail()
 {
  local LOCAL_STRING_RAWMSG
  local LOCAL_DATETIME
  local LOCAL_FILE_LOG
+ local LOCAL_STRING_MESSAGE
+ local LOCAL_EMAIL_SENDCOMMAND
 
  file_checkandcreate_log
 
@@ -85,9 +88,13 @@ syslog_writelogsendemail()
   if [ "$LOCAL_STRING_RAWMSG" != "" ]
   then
    LOCAL_DATETIME=$(/bin/date)
-   LOCAL_FILE_LOG=$(/usr/bin/head -n 1 "$CONFIG_FILE_LOGSUFFIX.logfile")
+   LOCAL_STRING_MESSAGE="$LOCAL_DATETIME: $LOCAL_STRING_RAWMSG"
 
-   echo "$LOCAL_DATETIME: $LOCAL_STRING_RAWMSG" 1>>"$LOCAL_FILE_LOG"
+   LOCAL_EMAIL_SENDCOMMAND=$(command_replace_emailbody "$LOCAL_STRING_MESSAGE")
+   $(/bin/bash -c "$LOCAL_EMAIL_SENDCOMMAND")
+
+   LOCAL_FILE_LOG=$(/usr/bin/head -n 1 "$CONFIG_FILE_LOGSUFFIX.logfile")
+   echo "$LOCAL_STRING_MESSAGE" 1>>"$LOCAL_FILE_LOG"
   fi
  done
 }
