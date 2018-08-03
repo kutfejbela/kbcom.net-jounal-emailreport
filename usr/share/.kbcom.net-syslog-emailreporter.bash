@@ -7,6 +7,27 @@ command_replace_emailbody()
  echo "${CONFIG_EMAIL_SENDCOMMAND%%@EB@*}${LOCAL_EMAIL_BODY/\"/\\\"}${CONFIG_EMAIL_SENDCOMMAND#*@EB@}"
 }
 
+file_checkandcreate_log()
+{
+ if [ ! -f "$CONFIG_FILE_LOGSUFFIX.logfile" ]
+ then
+  LOCAL_DATETIME=$(/bin/date +%Y%m%d%H%M%S%N)
+
+  echo "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME" 1>"$CONFIG_FILE_LOGSUFFIX.logfile"
+  echo -n "" 1> "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME"
+ else
+  LOCAL_FILE_LOG=$(/usr/bin/head -n 1 "$CONFIG_FILE_LOGSUFFIX.logfile")
+
+  if [ ! -f "$LOCAL_FILE_LOG" ]
+  then
+   LOCAL_DATETIME=$(/bin/date +%Y%m%d%H%M%S%N)
+
+   echo "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME" 1>"$CONFIG_FILE_LOGSUFFIX.logfile"
+   echo -n "" 1> "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME"
+  fi
+ fi
+}
+
 syslog_send_email()
 {
  local LOCAL_STRING_RAWMSG
@@ -33,9 +54,7 @@ syslog_write_log()
  local LOCAL_DATETIME
  local LOCAL_FILE_LOG
 
- LOCAL_DATETIME=$(/bin/date +%Y%m%d%H%M%S%N)
-
- echo "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME" 1>"$CONFIG_FILE_LOGSUFFIX.logfile"
+ file_checkandcreate_log
 
  while read LOCAL_STRING_RAWMSG
  do
@@ -53,15 +72,13 @@ syslog_write_log()
  done
 }
 
-syslog_writelogsendmail()
+syslog_writelogsendemail()
 {
  local LOCAL_STRING_RAWMSG
  local LOCAL_DATETIME
  local LOCAL_FILE_LOG
 
- LOCAL_DATETIME=$(/bin/date +%Y%m%d%H%M%S%N)
-
- echo "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME" 1>"$CONFIG_FILE_LOGSUFFIX.logfile"
+ file_checkandcreate_log
 
  while read LOCAL_STRING_RAWMSG
  do
