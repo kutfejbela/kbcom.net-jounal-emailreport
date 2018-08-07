@@ -23,10 +23,15 @@ file_checkandcreate_log()
 
   if [ ! -f "$LOCAL_FILE_LOG" ]
   then
-   LOCAL_DATETIME=$(/bin/date +%Y%m%d%H%M%S%N)
+   echo -n "" 1> "$LOCAL_FILE_LOG"
 
-   echo "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME" 1>"$CONFIG_FILE_LOGSUFFIX.logfile"
-   echo -n "" 1> "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME"
+   if [ ! -f "$LOCAL_FILE_LOG" ]
+   then
+    LOCAL_DATETIME=$(/bin/date +%Y%m%d%H%M%S%N)
+
+    echo "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME" 1>"$CONFIG_FILE_LOGSUFFIX.logfile"
+    echo -n "" 1> "$CONFIG_FILE_LOGSUFFIX.$LOCAL_DATETIME"
+   fi
   fi
  fi
 }
