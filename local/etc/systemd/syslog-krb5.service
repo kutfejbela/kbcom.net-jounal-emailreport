@@ -1,5 +1,5 @@
 [Unit]
-Description=Init KerberosV5 ticket for syslog
+Description=Init KerberosV5 ticket for syslog (email)
 Requires=network-online.target
 After=network-online.target
 

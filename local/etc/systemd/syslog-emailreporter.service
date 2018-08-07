@@ -1,5 +1,5 @@
 [Unit]
-Description=syslog-emailreporter logrotate and send mail
+Description=syslog-emailreporter logrotate and send e-mail
 Requires=network-online.target
 After=network-online.target
 

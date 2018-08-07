@@ -1,0 +1,3 @@
+Tue Aug  7 11:34:37 CEST 2018: mail.err <19>Aug  7 11:34:37 msmtp: host=szerver03.petav.local tls=on auth=on user=host-clients from=root@szerver03.petav.local recipients=root@szerver03.petav.local errormsg='GNU SASL: GSSAPI error in client while negotiating security context in gss_init_sec_context() in SASL library.  This is most likely due insufficient credentials or malicious interactions.' exitcode=EX_SOFTWARE
+Tue Aug  7 11:35:58 CEST 2018: authpriv.info <86>Aug  7 11:35:58 su[4438]: Successful su for rendszergazda by muhelyszakipar
+Tue Aug  7 11:36:32 CEST 2018: authpriv.notice <85>Aug  7 11:36:32 sudo: rendszergazda : TTY=pts/0 ; PWD=/home/muhelyszakipar ; USER=root ; COMMAND=/usr/bin/mc
