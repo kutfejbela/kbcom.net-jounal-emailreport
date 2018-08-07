@@ -6,7 +6,7 @@ After=network-online.target
 [Service]
 Type=oneshot
 RemainAfterExit=true
-ExecStart=/sbin/runuser -p syslog -c '/usr/bin/kinit -k host-clients'
+ExecStart=/sbin/runuser -p syslog -s /bin/sh -c '/usr/bin/kinit -k host-clients'
 
 [Install]
 WantedBy=multi-user.target

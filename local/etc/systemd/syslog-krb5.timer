@@ -1,8 +1,7 @@
 [Unit]
-Description=Run 'syslog-emailreporter.service' four hourly and on boot
+Description=Run 'syslog-krb5.service' four hourly and on boot
 
 [Timer]
-OnBootSec=1min
 OnUnitActiveSec=4h
 
 [Install]
