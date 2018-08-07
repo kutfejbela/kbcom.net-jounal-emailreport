@@ -1,0 +1,12 @@
+[Unit]
+Description=Init KerberosV5 ticket for syslog
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/sbin/runuser -p syslog -c '/usr/bin/kinit -k host-clients'
+
+[Install]
+WantedBy=multi-user.target

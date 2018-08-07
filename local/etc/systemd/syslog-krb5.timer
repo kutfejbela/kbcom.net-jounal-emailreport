@@ -2,7 +2,7 @@
 Description=Run 'syslog-emailreporter.service' four hourly and on boot
 
 [Timer]
-OnBootSec=2min
+OnBootSec=1min
 OnUnitActiveSec=4h
 
 [Install]
